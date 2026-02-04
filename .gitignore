@@ -27,3 +27,11 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 *.log
 .env
+
+# Node.js (root level temporary files)
+/node_modules/
+/package-lock.json
+/package.json
+
+# Frontend old backup
+frontend-old/
