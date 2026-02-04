@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Parser - Extract & Validate</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📧 Email Parser</h1>
+            <p>Извлечение и валидация email адресов</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="extract">Извлечение</button>
+            <button class="tab-button" data-tab="validate">Валидация</button>
+            <button class="tab-button" data-tab="docs">API Docs</button>
+        </div>
+
+        <!-- Extract Tab -->
+        <div id="extract" class="tab-content active">
+            <div class="card">
+                <h2>Извлечение Email Адресов</h2>
+
+                <div class="input-group">
+                    <label>Выберите источник:</label>
+                    <select id="sourceType" onchange="handleSourceChange()">
+                        <option value="text">Текст</option>
+                        <option value="url">URL</option>
+                        <option value="file">Файл</option>
+                    </select>
+                </div>
+
+                <!-- Text Input -->
+                <div id="textInput" class="source-input">
+                    <textarea id="extractText" placeholder="Вставьте текст для поиска email адресов..."></textarea>
+                    <label>
+                        <input type="checkbox" id="strictMode">
+                        Строгая валидация
+                    </label>
+                </div>
+
+                <!-- URL Input -->
+                <div id="urlInput" class="source-input" style="display:none;">
+                    <input type="url" id="extractUrl" placeholder="https://example.com">
+                    <label>
+                        <input type="checkbox" id="deepCrawl">
+                        Глубокое сканирование (crawl links)
+                    </label>
+                    <div id="depthControl" style="display:none; margin-top: 10px;">
+                        <label>Глубина сканирования: <span id="depthValue">2</span></label>
+                        <input type="range" id="maxDepth" min="1" max="5" value="2" oninput="updateDepthValue()">
+                    </div>
+                </div>
+
+                <!-- File Input -->
+                <div id="fileInput" class="source-input" style="display:none;">
+                    <input type="file" id="extractFile" accept=".txt,.html,.csv,.log">
+                    <p class="hint">Поддерживаемые форматы: .txt, .html, .csv, .log</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="performExtraction()">
+                    🔍 Извлечь Email
+                </button>
+
+                <div id="extractResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- Validate Tab -->
+        <div id="validate" class="tab-content">
+            <div class="card">
+                <h2>Валидация Email Адресов</h2>
+
+                <div class="input-group">
+                    <label>Введите email адреса (по одному на строку):</label>
+                    <textarea id="validateEmails" placeholder="example@gmail.com
+test@yahoo.com
+user@domain.com"></textarea>
+                </div>
+
+                <div class="options">
+                    <label>
+                        <input type="checkbox" id="checkMx" checked>
+                        Проверить MX записи
+                    </label>
+                    <label>
+                        <input type="checkbox" id="checkDisposable" checked>
+                        Проверить одноразовые email
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" onclick="performValidation()">
+                    ✅ Валидировать
+                </button>
+
+                <div id="validateResults" class="results"></div>
+            </div>
+        </div>
+
+        <!-- API Docs Tab -->
+        <div id="docs" class="tab-content">
+            <div class="card">
+                <h2>API Documentation</h2>
+
+                <div class="api-docs">
+                    <h3>Endpoints</h3>
+
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/extract/text</code>
+                        <p>Извлечь email из текста</p>
+                    </div>
+
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/extract/url</code>
+                        <p>Извлечь email с веб-страницы</p>
+                    </div>
+
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/extract/file</code>
+                        <p>Извлечь email из файла</p>
+                    </div>
+
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/validate/email</code>
+                        <p>Валидировать один email</p>
+                    </div>
+
+                    <div class="endpoint">
+                        <span class="method post">POST</span>
+                        <code>/api/validate/bulk</code>
+                        <p>Валидировать множество email</p>
+                    </div>
+
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/health</code>
+                        <p>Health check</p>
+                    </div>
+
+                    <div class="link-section">
+                        <a href="/docs" target="_blank" class="btn">📚 Swagger UI</a>
+                        <a href="/redoc" target="_blank" class="btn">📖 ReDoc</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Email Parser v1.0.0 | <a href="https://github.com/NameLucky2205/Email-Parser" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
